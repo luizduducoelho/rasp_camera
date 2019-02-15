@@ -1,9 +1,20 @@
 from picamera import PiCamera
+from picamera.array import PiRGBArray
 from time import sleep
+import numpy as np 
+import cv2
 
 camera = PiCamera()
+rawCapture = PiRGBArray(camera)
 
+# allow the camera to warmup
+time.sleep(0.1)
+
+# grab an image from the camera
 camera.rotation = 180
-camera.start_preview()
-sleep(10)
-camera.stop_preview()
+camera.capture(rawCapture, format="bgr")
+image = rawCapture.array
+
+# display the image on screen and wait for a keypress
+cv2.imshow("Image", image)
+cv2.waitKey(0)
